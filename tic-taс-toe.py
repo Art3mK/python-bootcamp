@@ -61,8 +61,7 @@ player_sign = player_1_sign
 # main loop
 step = 1
 while True:
-    while not check_win(board_state):
-        if step > 9: break
+    while not check_win(board_state) and ' ' in board_state.values():
         os.system('clear')
         print_board(board_state)
         index = 0
