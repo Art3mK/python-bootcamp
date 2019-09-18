@@ -30,6 +30,7 @@ def clear_board():
 
 
 def print_board(board_state):
+    os.system('clear')
     print('''
 {:^3}|{:^3}|{:^3}
 ---+---+---
@@ -62,7 +63,6 @@ player_sign = player_1_sign
 step = 1
 while True:
     while not check_win(board_state) and ' ' in board_state.values():
-        os.system('clear')
         print_board(board_state)
         index = 0
         while index not in range(1,10):
@@ -79,7 +79,6 @@ while True:
         else:
             player = player_1
             player_sign = player_1_sign
-    os.system('clear')
     print_board(board_state)
     result = check_win(board_state)
     if result:
