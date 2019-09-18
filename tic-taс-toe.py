@@ -23,8 +23,7 @@ def check_win(board_state):
         check_row(7,5,3)
 
 def clear_board():
-    global board_state
-    board_state = { 1:' ', 2:' ', 3:' ', 4:' ', 5:' ', 6:' ', 7:' ', 8:' ', 9:' ' }
+    return { 1:' ', 2:' ', 3:' ', 4:' ', 5:' ', 6:' ', 7:' ', 8:' ', 9:' ' }
 
 
 def print_board(board_state):
@@ -89,7 +88,7 @@ while True:
     while answer not in ('y','n'):
         answer = input("Play another one? (y|n): ")
     if answer == 'y':
-        clear_board()
+        board_state = clear_board()
         player = get_random_player(list(gamers.keys()))
         continue
     else:
