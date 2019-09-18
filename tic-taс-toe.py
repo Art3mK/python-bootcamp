@@ -41,15 +41,9 @@ def get_random_player(gamers):
 
 def get_other_player(starting_player, gamers_list):
     return gamers_list[gamers_list.index(starting_player)-1]
-    # arr = gamers_list
-    # arr.remove(starting_player)
-    # return arr[0]
 
 def get_second_sign(first_sign, signs):
     return signs[signs.index(first_sign)-1]
-    # arr = signs
-    # arr.remove(first_sign)
-    # return arr[0]
 
 def init_players(player_1, player_2):
     starting_player = get_random_player([player_1,player_2])
