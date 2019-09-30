@@ -10,13 +10,17 @@ class Player():
         if (dealer):
             self.cards[0].secret = True
 
+    def reset_cards(self, card1, card2):
+        self.cards = [card1, card2]
+        self.calculate_cards_value()
+
     def lose_bet(self, amount):
         self.bank -= amount
 
     def win_bet(self, amount):
         self.bank +=amount
 
-    def place_bet(self,amount):
+    def can_place_bet(self,amount):
         if amount > self.bank:
             print("lol, you can't bet more than you have")
             return False
