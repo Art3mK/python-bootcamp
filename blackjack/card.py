@@ -1,10 +1,14 @@
 class Card():
     def __init__(self, **kwargs):
+        self.secret = False
         self.rank = kwargs["rank"]
         self.suit = kwargs["suit"]
 
     def __repr__(self):
-        return f'{self.suit}:{self.rank}'
+        if self.secret:
+            return 'xxx:xxx'
+        else:
+            return f'{self.suit}:{self.rank}'
 
     def value(self, **kwargs):
         kwargs.setdefault('ace11', False)
