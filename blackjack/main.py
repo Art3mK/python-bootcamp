@@ -20,7 +20,7 @@ def main():
         bet = get_bet(human_player)
         computer.print_cards()
         serve_player(human_player,deck)
-        if human_player.is_busted():
+        if human_player.get_cards_value() == 0:
             print(f"{computer.name} won your {bet}!")
             human_player.lose_bet(bet)
             if human_player.bank < 1:
@@ -31,18 +31,18 @@ def main():
             computer.cards[0].secret = False
             computer.print_cards()
             # If player has a natural and the dealer does not, the dealer immediately pays that player one and a half times the amount of their bet
-            if human_player.has_21() and not computer.cards[1].rank in ["jack",10,"queen","king","ace"]:
+            if human_player.get_cards_value() == 21 and not computer.cards[1].rank in ["jack",10,"queen","king","ace"]:
                 print(f"{human_player.name} won {bet*1.5}$ with blackjack!")
                 human_player.win_bet(bet*1.5)
                 continue
-            while(computer.get_cards_value() < 17):
+            while(computer.get_cards_value() < 17 and computer.get_cards_value() != 0):
                 computer.add_card(deck.pull_card())
                 computer.print_cards()
             print("=========")
             computer.print_cards()
             print("=========")
             human_player.print_cards()
-            if computer.is_busted() or human_player.get_cards_value() > computer.get_cards_value():
+            if computer.get_cards_value() == 0 or human_player.get_cards_value() > computer.get_cards_value():
                 print(f"Player wins {bet*1.5}€")
                 human_player.win_bet(bet*1.5)
             elif human_player.get_cards_value() == computer.get_cards_value():
@@ -67,7 +67,9 @@ def serve_player(player,deck):
     answer = ''
     while answer != 'n':
         player.print_cards()
-        if player.is_busted() or player.has_21(): return
+        player_score = player.get_cards_value()
+        print(player_score)
+        if player_score == 0 or player_score == 21: return
         answer = input(f"{player.name}, wanna hit? (y|n): ")
         if answer == 'y':
             player.add_card(deck.pull_card())

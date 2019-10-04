@@ -6,13 +6,13 @@ class Player():
         self.name = name
         self.bank = bank
         self.dealer = dealer
-        self.calculate_cards_value()
+        self.score = self.__calculate_cards_value__()
         if (dealer):
             self.cards[0].secret = True
 
     def reset_cards(self, card1, card2):
         self.cards = [card1, card2]
-        self.calculate_cards_value()
+        self.score = self.__calculate_cards_value__()
 
     def lose_bet(self, amount):
         self.bank -= amount
@@ -28,35 +28,48 @@ class Player():
 
     def add_card(self, card):
         self.cards.append(card)
-        self.calculate_cards_value()
-        if self.is_busted():
+        self.score = self.__calculate_cards_value__()
+        if self.score == 0:
             print(f"{self.name} busted!")
 
-    def calculate_cards_value(self):
-        sum1 = 0
-        sum11 = 0
+    def __calculate_cards_value__(self):
+        """
+        Calculates values for players cards
+        Set value to 0, if hand is bust
+        """
+        score = 0
+        aces = False
+        # first treat all aces as 1 and track if any of the cards is ace
+        # then if aces found -> try to return sum + 10 (as only one ace in hand could be 11)
+        # if that is > thatn 21, try to return sum where all aces are 1
+        # if that is > 21, then player is bust
         for card in self.cards:
-            sum1 += card.value()
-            sum11 += card.value(ace11=True)
-        self.sum1 = sum1
-        self.sum11 = sum11
+            # first try to convert value to int
+            try:
+                score += int(card.rank)
+            except ValueError:
+                # card is some high rank card
+                if card.rank in ['jack','queen','king']:
+                    score += 10
+                else:
+                    # ace found
+                    aces = True
+                    score += 1
+        if aces:
+            if score+10 <= 21:
+                return score+10
+            elif score <= 21:
+                return score
+            else:
+                return 0
+        elif score <= 21:
+            return score
+        else:
+            return 0
 
     def get_cards_value(self):
-        if self.is_busted():
-            return 42
-        elif self.has_21():
-            return 21
-        elif self.sum11 > 21:
-            return self.sum1
-        else:
-            return self.sum1 if 21 - self.sum1 < 21 - self.sum11 else self.sum11
+        return self.score
 
     def print_cards(self):
         print(f"{self.name} cards:")
         pprint(self.cards)
-
-    def is_busted(self):
-        return True if self.sum1 > 21 else False
-
-    def has_21(self):
-        return True if self.sum1 == 21 or self.sum11 == 21 else False
